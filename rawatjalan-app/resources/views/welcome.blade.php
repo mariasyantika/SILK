@@ -39,39 +39,32 @@
                 xhr.send();
 
                 // 4. This will be called after the response is received
-                xhr.onload=function() {
-                    if (xhr.status !=200 && xhr.status !=201) { // analyze HTTP status of the response
-                        alert(Error ${xhr.status} : ${xhr.statusText}); // e.g. 404: Not Found
-                    }else {// show the result
-                        //alert(Done, got $ {xhr.response.length}bytes); // response is the server response
-                        //alert(xhr.responseText); // e.g 404: Not Found
-                        //document.getElementById("docs-card").innerHTML = xhr.responseText;
-                        
-                        let table = document.getElementById("outputTable");
-                        data = JSON.parse(xhr.responseText);
-                        data.forEach(function(item)){
-                            var row = document.createElement("tr");
+                xhr.onload = function() {
+                    if (xhr.status != 200 && xhr.status != 201) { // Fix logical operator here
+                        alert(Error ${xhr.status}: ${xhr.statusText}); // e.g. 404: Not Found
+                    } else { // show the result
+                        // alert(Done, got ${xhr.response.length} bytes);
+                        // alert(xhr.responseText); // response is the server response
+                        // document.getElementById("card-kosong").innerHTML = xhr.responseText;
+                        let responseData = JSON.parse(xhr.responseText);
+                        let outputTabel = document.getElementById("outputTabel");
+                        let tbody = outputTabel.querySelector("tbody");
 
-                            var id = document.createElement("td")
-                            id.textContent = item.id;
-                            row.appendChild(id);
+                        // Bersihkan isi tbody sebelum menambahkan data baru
+                        tbody.innerHTML = "";
 
-                            var sku = document.createElement("td");
-                            sku.textContent = item.sku;
-                            row.appendChild(sku);
-
-                            var label = document.createElement("td");
-                            label.textContent = item.label_catatan;
-                            row.appendChild(label);
-
-                            var jumlah = document.createElement("td");
-                            jumlah.textContent = item.jumlah;
-                            row.appendChild(jumlah);
-
-                            table.appendChild(row);
-                        }                       
-                        
-                    }
+                        // Loop melalui data dan tambahkan baris-baris baru ke dalam tabel
+                        responseData.forEach(function(data) {
+                            let row = document.createElement("tr");
+                            row.innerHTML = 
+                                <td>${data.id}</td>
+                                <td>${data.sku}</td>
+                                <td>${data.label_catatan}</td>
+                                <td>${data.jumlah}</td>
+                            ;
+                            tbody.appendChild(row);
+                        }); 
+                                    }
                 };
 
                 xhr.onerror=function() {

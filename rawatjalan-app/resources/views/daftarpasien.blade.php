@@ -22,13 +22,13 @@
       
         </style>
         <script type="text/javascript" language="javascript">
-            function get_tindakan(){
+            function get_pasien(){
 
                 /* 1. Create a new XMLHttpRequest object */
                 let xhr = new XMLHttpRequest();
         
                 /*  2. Configure it: GET-request for the URL /article/.../load */
-                xhr.open('GET', 'http://localhost/silk2024-slim-main/public/rawatjalan');
+                xhr.open('GET', 'http://localhost/silk2024-slim-main/public/pasien');
         
                 // 3. Send the request over the network
                 xhr.send();
@@ -42,7 +42,7 @@
                         //alert(xhr.responseText); // e.g 404: Not Found
                         //document.getElementById("docs-card").innerHTML = xhr.responseText;
                         let responseData = JSON.parse(xhr.responseText);
-                        let outputTabel = document.getElementById("outputTabelTindakan");
+                        let outputTabel = document.getElementById("outputTabelPasien");
                         let tbody = outputTabel.querySelector("tbody");
 
                         // Bersihkan isi tbody sebelum menambahkan data baru
@@ -52,12 +52,15 @@
                         responseData.forEach(function(data) {
                             let row = document.createElement("tr");
                             row.innerHTML = `
-                            <td>${data.id}</td>
+                                <td>${data.id}</td>
                                 <td>${data.no_rm}</td>
                                 <td>${data.nama}</td>
-                                <td>${data.deskripsi}</td>
-                                <td>${data.obat}</td>
-                                
+                                <td>${data.no_hp}</td>
+                                <td>
+                                    <a href="/formedit/${data.id}" class="btn btn-success" role='button'>Lihat Detail
+                                    </a>
+                                    
+                                </td>
                             `;
                             tbody.appendChild(row);
                         }); 
@@ -68,8 +71,7 @@
                     alert("Request failed");
                 };
             }
-            
-            window.onload = get_tindakan;
+            window.onload = get_pasien;
             </script>
 
     </head>
@@ -99,7 +101,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="/daftarpasien">Daftar Pasien</a>
+                                <a class="nav-link" href="/daftarpasien"> Daftar Pasien</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/rawatjalan">Tindakan</a>
@@ -113,21 +115,34 @@
         </nav>
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
                 <div class="flex justify-center">
-                    <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-black bolder" >Data Rawat Jalan</h2>
+                    <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-black bolder" >Daftar Pasien</h2>
                     </div>
 
                 <div class="mt-16">
                         <div class="scale-100 p-6 bg-white dark:bg-gray-800/50 hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-1 focus:outline-red-500">
                             <div>
-                               
+                                <div class="col-md-10">
+                                     @yield('content')
+                                </div>
+                                <body>
+                                    <div class="container mt-2">
+                                        <form>
+                                          <div class="form-group">
+                                            <label for="tanggal">Pilih Tanggal:</label>
+                                            <input type="date" class="form-control" id="tanggal" name="tanggal">
+                                          </div>
+                                          <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                      </div>
+                                </body>
                                 <!-- ID INI HARUS SAMA YG DIATAS -->
-                                <table class="table table-striped table-hover" id="outputTabelTindakan">
+                                <table class="table table-striped table-hover" id="outputTabelPasien">
                                     <thead>
                                         <th scope="col">ID</th>
                                         <th scope="col">No RM</th>
-                                        <th scope="col">Nama</th>
-                                        <th scope="col">Tindakan yang dilakukan dokter</th>
-                                        <th scope="col">Obat yang diberikan</th>
+                                        <th scope="col">Nama Pasien</th>
+                                        <th scope="col">No HP</th>
+                                        <th scope="col">Button tindak </th>
                                     </thead>
                                     <tbody>
                                     </tbody>
